@@ -1,149 +1,147 @@
 <html>
-  <head>
-    <title>Clemens Chess Engine</title>
 
-    <!-- favicon -->
-    <link rel="shortcut icon" href="/static/favicon.ico">
+<head>
+  <title>Clemens Chess Engine</title>
 
-    <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="/static/favicon.ico">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
-    <!-- chessjs -->
-    <script src="/static/js/chess.js"></script>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+  </script>
 
-    <!-- chessboardjs -->
-    <link rel="stylesheet" href="/static/css/chessboard-1.0.0.min.css">
-    <script src="/static/js/chessboard-1.0.0.min.js"></script>
+  <!-- chessjs -->
+  <script src="/static/js/chess.js"></script>
 
-  </head>
-  <body>
-    <div class="col">
+  <!-- chessboardjs -->
+  <link rel="stylesheet" href="/static/css/chessboard-1.0.0.min.css">
+  <script src="/static/js/chessboard-1.0.0.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container text-center p-1 m-3 mx-auto max-width">
+
+    <header class="container text-center p-1 m-3 border-bottom">
+      <div class="row align-items-end">
+        <div class="col-1"><img class="img-fluid" src="/static/LOGO.png"></img></div>
+        <div class="col">
+          <div class="row fs-2">Clemens v0.3.0</div>
+          <div class="row fs-6">Chess Engine by Sven Haardiek</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container text-center p-1 m-3">
       <div class="row">
         <div class="col">
-          <div class="card mt-2">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-5">
-                  <!-- chess board view -->
-                  <div id="chess_board" class="mx-auto mb-2" style="width: 400px;"></div>
+          <div class="row">
+            <!-- chess board view -->
+            <div class="m-1" id="chess_board"></div>
+            <!-- game status -->
+            <strong class="m-1">
+              <div id="status"></div>
+            </strong>
+          </div>
+        </div>
+        <div class="col">
+          <!-- game controls -->
+          <div class="row mx-auto m-1">
 
-                  <!-- game controls -->
-                  <div class="row mx-auto mb-2" style="width: 400px;">
-                    <!-- game status -->
-                    <strong class="mx-auto mb-2"><div id="status"></div></strong>
-
-                    <!-- FEN -->
-                    <div class="input-group mb-3">
-                      <input id="fen" type="text" class="form-control">
-                      <div class="input-group-append">
-                        <button id="set_fen" class="btn btn-outline-success">Set FEN</button>
-                      </div>
-                    </div>
-
-                    <!-- strength controls -->
-                    <div class="input-group mb-3">
-                      <select id="move_time" class="form-control mr-2">
-                        <option value="0">N/A</option>
-                        <option value="instant" selected>Instant response</option>
-                        <option value="1">1 sec</option>
-                        <option value="2">2 sec</option>
-                        <option value="3">3 sec</option>
-                        <option value="4">4 sec</option>
-                        <option value="5">5 sec</option>
-                        <option value="6">6 sec</option>
-                        <option value="7">7 sec</option>
-                        <option value="8">8 sec</option>
-                        <option value="9">9 sec</option>
-                        <option value="10">10 sec</option>
-                      </select>
-                      <select id="fixed_depth" class="form-control ml-2">
-                        <option value="0">N/A</option>
-                        <option value="1">1 ply</option>
-                        <option value="2">2 ply</option>
-                        <option value="3">3 ply</option>
-                        <option value="4">4 ply</option>
-                        <option value="5">5 ply</option>
-                        <option value="6">6 ply</option>
-                        <option value="7">7 ply</option>
-                        <option value="8">8 ply</option>
-                        <option value="9">9 ply</option>
-                        <option value="10">10 ply</option>
-                        <option value="11">11 ply</option>
-                        <option value="12">12 ply</option>
-                      </select>
-                    </div>
-
-                    <!-- -buttons -->
-                    <div class="btn-group">
-                      <button id="new_game" class="btn btn-outline-secondary">New game</button>
-                      <button id="make_move" class="btn btn-outline-secondary">Make move</button>
-                      <button id="take_back" class="btn btn-outline-secondary">Take back</button>
-                      <button id="flip_board" class="btn btn-outline-secondary">Flip board</button>
-                    </div>
-
-                  </div>
-                </div>
-                <div class="col ml-4">
-                  <!-- engine info -->
-                  <div class="row mx-auto">
-                    <div class="col"><img src="/static/LOGO.png"></img></div>
-                    <div class="col-8">
-                      <p class="lead font-weight-normal mt-3">
-                      <strong>Clemens v0.3.0</strong>
-                      <br>
-                      UCI chess engine by Sven Haardiek
-                      </p>
-                    </div>
-                  </div>
-
-                  <hr>
-
-                  <!-- game info -->
-                  <table class="table text-center mt-4">
-                    <thead>
-                      <tr>
-                        <th>Score</th>
-                        <th>Depth</th>
-                        <th>Time</th>
-                        <th>Nodes</th>
-                        <th>Knps</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td><strong id="score" class="text-danger"></strong></td>
-                        <td id="depth"></td>
-                        <td id="time"></td>
-                        <td id="nodes"></td>
-                        <td id="knps"></td>
-                      <tr>
-                    </tbody>
-                  </table>
-
-                  <hr>
-
-                  <!-- PGN output -->
-                  <div class="mt-2"><strong>PGN:</strong></div>
-                  <div id="pgn"></div>
-
-                  <!-- download button -->
-                  <button id="download_button" class="btn btn-success mt-2">Download</button>
-
-                  <!-- download link -->
-                  <a id="download_link" href="" download="" hidden>your pgn</a>
-                </div>
+            <!-- FEN -->
+            <div class="input-group mb-3">
+              <input id="fen" type="text" class="form-control">
+              <div class="input-group-append">
+                <button id="set_fen" class="btn btn-outline-success">Set FEN</button>
               </div>
             </div>
+
+            <!-- strength controls -->
+            <div class="input-group mb-3">
+              <select id="move_time" class="form-control mr-2">
+                <option value="0">N/A</option>
+                <option value="instant" selected>Instant response</option>
+                <option value="1">1 sec</option>
+                <option value="2">2 sec</option>
+                <option value="3">3 sec</option>
+                <option value="4">4 sec</option>
+                <option value="5">5 sec</option>
+                <option value="6">6 sec</option>
+                <option value="7">7 sec</option>
+                <option value="8">8 sec</option>
+                <option value="9">9 sec</option>
+                <option value="10">10 sec</option>
+              </select>
+              <select id="fixed_depth" class="form-control ml-2">
+                <option value="0">N/A</option>
+                <option value="1">1 ply</option>
+                <option value="2">2 ply</option>
+                <option value="3">3 ply</option>
+                <option value="4">4 ply</option>
+                <option value="5">5 ply</option>
+                <option value="6">6 ply</option>
+                <option value="7">7 ply</option>
+                <option value="8">8 ply</option>
+                <option value="9">9 ply</option>
+                <option value="10">10 ply</option>
+                <option value="11">11 ply</option>
+                <option value="12">12 ply</option>
+              </select>
+            </div>
+
+            <!-- -buttons -->
+            <div class="btn-group">
+              <button id="new_game" class="btn btn-outline-secondary">New game</button>
+              <button id="make_move" class="btn btn-outline-secondary">Make move</button>
+              <button id="take_back" class="btn btn-outline-secondary">Take back</button>
+              <button id="flip_board" class="btn btn-outline-secondary">Flip board</button>
+            </div>
+
+            <!-- game info -->
+            <table class="table text-center mt-4">
+              <thead>
+                <tr>
+                  <th>Score</th>
+                  <th>Depth</th>
+                  <th>Time</th>
+                  <th>Nodes</th>
+                  <th>Knps</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong id="score" class="text-danger"></strong></td>
+                  <td id="depth"></td>
+                  <td id="time"></td>
+                  <td id="nodes"></td>
+                  <td id="knps"></td>
+                <tr>
+              </tbody>
+            </table>
+
+            <!-- PGN output -->
+            <div class="mt-2"><strong>PGN:</strong></div>
+            <div id="pgn"></div>
+
+            <!-- download button -->
+            <button id="download_button" class="btn btn-success mt-2">Download</button>
+
+            <!-- download link -->
+            <a id="download_link" href="" download="" hidden>your pgn</a>
           </div>
         </div>
       </div>
     </div>
-  </body>
+  </div>
+
+</body>
+
 </html>
 
 <script>
@@ -153,34 +151,36 @@
     $('#take_back').attr('disabled', true);
 
     // make HTTP POST request to make move API
-    $.post('/make_move',{
-        'pgn': game.pgn(),
-        'fixed_depth': $('#fixed_depth option:selected').val(),
-        'move_time': $('#move_time option:selected').val()
-      }, function(data) {
-        // load fen into the current board state
-        game.move(data.best_move, { sloppy: true })
+    $.post('/make_move', {
+      'pgn': game.pgn(),
+      'fixed_depth': $('#fixed_depth option:selected').val(),
+      'move_time': $('#move_time option:selected').val()
+    }, function (data) {
+      // load fen into the current board state
+      game.move(data.best_move, {
+        sloppy: true
+      })
 
-        // update board position
-        board.position(game.fen());
+      // update board position
+      board.position(game.fen());
 
-        // update game info
-        $score.text(data.score);
-        $depth.text(data.depth);
-        $time.text(data.time);
-        $nodes.text(data.nodes);
-        $knps.text(Math.round(Number($nodes.text()) / parseFloat($time.text())) / 1000)
+      // update game info
+      $score.text(data.score);
+      $depth.text(data.depth);
+      $time.text(data.time);
+      $nodes.text(data.nodes);
+      $knps.text(Math.round(Number($nodes.text()) / parseFloat($time.text())) / 1000)
 
-        // update game status
-        updateStatus();
+      // update game status
+      updateStatus();
 
-        // re-enable take back button
-        $('#take_back').attr('disabled', false);
+      // re-enable take back button
+      $('#take_back').attr('disabled', false);
     });
   }
 
   // handle new game button click
-  $('#new_game').on('click', function() {
+  $('#new_game').on('click', function () {
     // reset board state
     game.reset();
 
@@ -189,13 +189,13 @@
   });
 
   // handle make move button click
-  $('#make_move').on('click', function() {
+  $('#make_move').on('click', function () {
     // make computer move
     make_move();
   });
 
   // handle take back button click
-  $('#take_back').on('click', function() {
+  $('#take_back').on('click', function () {
     // take move back
     game.undo();
     game.undo();
@@ -208,26 +208,26 @@
   });
 
   // handle flip board button click
-  $('#flip_board').on('click', function() {
+  $('#flip_board').on('click', function () {
     // flip board
     board.flip();
 
   });
 
   // handle select move time option
-  $('#move_time').on('change', function() {
+  $('#move_time').on('change', function () {
     // disable fixed depth
     $('#fixed_depth').val('0');
   });
 
   // handle select fixed depth option
-  $('#fixed_depth').on('change', function() {
+  $('#fixed_depth').on('change', function () {
     // disable fixed depth
     $('#move_time').val('0');
   });
 
   // handle set FEN button click
-  $('#set_fen').on('click', function() {
+  $('#set_fen').on('click', function () {
     // set user FEN
 
     // FEN parsed
@@ -241,7 +241,7 @@
   });
 
   // handle download button click
-  $('#download_button').on('click', function() {
+  $('#download_button').on('click', function () {
     // init date
     var date = new Date();
 
@@ -255,33 +255,33 @@
     var user_color = prompt('What color did you play with? (please type "White" or "Black")');
 
     // if user color is white
-    if (user_color == 'White')
-    {
+    if (user_color == 'White') {
       // init PGN header
-      pgn_header = '[White "' + user_name + '"]\n[Black "BBC 1.2"]\n\n';
+      pgn_header = '[White "' + user_name + '"]\n[Black "Clemens v0.3.0"]\n\n';
 
       // init PGN filename
-      $('#download_link').attr('download', user_name + '_vs_BBC_' + date.toString().replace(/\s/g, "_") + '.pgn');
+      $('#download_link').attr('download', user_name + '_vs_Clemens_' + date.toString().replace(/\s/g, "_") + '.pgn');
     }
     // if user color is black
-    else if (user_color == 'Black')
-    {
+    else if (user_color == 'Black') {
       // init PGN header
-      pgn_header = '[White "BBC 1.2"]\n[Black "' + user_name + '"]\n\n';
+      pgn_header = '[White "Clemens v0.3.0"]\n[Black "' + user_name + '"]\n\n';
 
       // init PGN filename
-      $('#download_link').attr('download', 'BBC_vs_' + user_name + '_' + date.toString().replace(/\s/g, "_") + '.pgn');
+      $('#download_link').attr('download', 'Clemens_vs_' + user_name + '_' + date.toString().replace(/\s/g, "_") +
+        '.pgn');
     }
     // otherwise it's error
-    else
-    {
+    else {
       alert('Color is illegal, please type "White" or "Black"');
       return;
     }
 
     // init download link
     $('#download_link').attr('href', window.URL.createObjectURL(
-      new Blob([pgn_header + game.pgn()], {type: 'text'})
+      new Blob([pgn_header + game.pgn()], {
+        type: 'text'
+      })
     ));
 
     // mimic download link click
@@ -301,19 +301,19 @@
   var $knps = $('#knps')
 
   // on picking up a piece
-  function onDragStart (source, piece, position, orientation) {
+  function onDragStart(source, piece, position, orientation) {
     // do not pick up pieces if the game is over
     if (game.game_over()) return false
 
     // only pick up pieces for the side to move
     if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-        (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
       return false
     }
   }
 
   // on dropping piece
-  function onDrop (source, target) {
+  function onDrop(source, target) {
     // see if the move is legal
     var move = game.move({
       from: source,
@@ -333,12 +333,12 @@
 
   // update the board position after the piece snap
   // for castling, en passant, pawn promotion
-  function onSnapEnd () {
+  function onSnapEnd() {
     board.position(game.fen())
   }
 
   // update game status
-  function updateStatus () {
+  function updateStatus() {
     var status = ''
 
     var moveColor = 'White'
@@ -385,7 +385,7 @@
   board = Chessboard('chess_board', config)
 
   // prevent scrolling on touch devices
-  $('#chess_board').on('scroll touchmove touchend touchstart contextmenu', function(e) {
+  $('#chess_board').on('scroll touchmove touchend touchstart contextmenu', function (e) {
     e.preventDefault();
   });
 

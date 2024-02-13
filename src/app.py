@@ -11,11 +11,6 @@ import chess.engine
 import chess.pgn
 import io
 import random
-from flask import jsonify
-from flask import Response
-from flask_pymongo import PyMongo
-from datetime import datetime
-import json
 
 # create web app instance
 app = Flask(__name__)
